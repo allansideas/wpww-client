@@ -5,7 +5,7 @@
 @import 'sass-bootstrap/lib/scaffolding';
 @import 'sass-bootstrap/lib/type';
 @import 'sass-bootstrap/lib/grid';
-@import 'sass-bootstrap/lib/forms';
+//@import 'sass-bootstrap/lib/forms';
 @import 'sass-bootstrap/lib/tables';
 @import 'sass-bootstrap/lib/component-animations';
 @import 'fonts';
@@ -14,6 +14,10 @@
 html {
   overflow: -moz-scrollbars-vertical; 
   overflow-y: scroll;
+}
+
+body {
+  background: $clr-2;
 }
 
 /* removing dotted line on buttons and clickable input elements for Firefox */
@@ -40,9 +44,11 @@ h2, body{
   padding: 4em 0;
   h1 {
     margin-top: 0;
+    margin-bottom: 0;
   }
 
   h2 {
+    margin-top: 0;
     font-family: $font-family-2;
   }
 }
@@ -128,11 +134,16 @@ h2, body{
     font-family: $font-family-1;
   }
   table {
-    @extend .table;
+    width: 100%;
     font-size: 1.1em;
-    tbody > tr > td {
-      border-top: none;
-      border-bottom: dashed 1px $clr-1-contrast-1;
+  }
+  .owings td {
+    color: $clr-2;
+    border-top: none;
+    border-bottom: dashed 1px $clr-1-contrast-1;
+    &.pad {
+      padding: 0.5em;
+      padding-left: 1em;
     }
   }
   button {
@@ -160,11 +171,17 @@ h2, body{
 .alert-success {
   color: $clr-3;
   font-weight: bold;
+  &.fl-border {
+    border-bottom: solid 1px $clr-3;
+  }
 }
 
 .alert-error {
   color: $clr-4;
   font-weight: bold;
+  &.fl-border {
+    border-bottom: solid 1px $clr-4;
+  }
 }
 
 .icon-pencil {

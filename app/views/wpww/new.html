@@ -23,8 +23,10 @@
       </div>
       <div class="col-md-5">
         <label for="description">Describe it:</label>
-        <input id="description" ng-model="group.description" type="text">
-        <button ng-click="createGroup()">Create it</button>
+        <form ng-submit="createGroup()">
+          <input id="description" ng-model="group.description" type="text">
+          <button>Create it</button>
+        </form>
       </div>
     </div>
   </div>

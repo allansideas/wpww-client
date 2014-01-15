@@ -25,37 +25,86 @@ angular.module('states.public', [])
           $scope.owing_results = []
           $scope.ux = {}
           $scope.ux.show_add_user = false
+          $scope.ux.show_edit_user = false
           $scope.ux.adding_user = false
+          $scope.ux.updating_user = false
 
           $scope.toggleAddUser = ()->
             $scope.ux.show_add_user = ! $scope.ux.show_add_user
+
+          $scope.toggleEditUser = ()->
+            $scope.ux.show_edit_user = ! $scope.ux.show_edit_user
 
           Group.getGroup($state.params.identifier)
           .success (data)->
             $scope.group = data
             User.usersInGroup($scope.group.id)
             .success (data)->
-              $scope.group.users = data
-              $scope._user = {}
+              $scope.group.users = data.reverse()
+              if $scope.group.users.length == 0
+                $scope.ux.show_add_user = true
           .error (data, status, headers, config)->
             alert "Can't find group"
 
-          $scope.addUser = ()->
-            if !$scope._user.name or !$scope._user.amount_payed_cents
-                flash.to('fl-user-form').error = 'Error saving the user check you filled in all the fields correctly.'
-                $scope.ux.adding_user = false
-                return false
+          validateUser = (user, flash_target)->
+            if !user.name or !user.amount_payed_cents
+              flash.to('fl-user-form').error = 'Error saving the user check you filled in all the fields correctly.'
+              $scope.ux.adding_user = false
+              $scope.ux.updating_user = false
+              return false
+            else
+              return true
 
+          $scope.addUser = ()->
+            if !validateUser($scope._user, 'fl-user-form')
+              return false
             unless $scope.ux.adding_user
               $scope.ux.adding_user = true
               User.createUser($scope.group.id, $scope._user)
               .success (data)->
-                $scope.group.users.push data
+                $scope.group.users.unshift data
                 $scope._user = {}
                 $scope.ux.adding_user = false
-                flash.to('fl-user-form').success = 'Success! add someone else?'
-              .error (data, status, headers, config)->
+                $scope.ux.show_add_user = false
+                flash.to('fl-user-list').success = 'Successfully added user!'
+              .error (data)->
                 flash.to('fl-user-form').error = 'Error saving the user check you filled in all the fields correctly.'
+
+          $scope.editUser = (user)->
+            $scope._e_user = angular.copy(user)
+            $scope.ux.show_edit_user = true
+
+          $scope.updateUser = ()->
+            if !validateUser($scope._e_user, 'fl-user-form')
+              return false
+
+            unless $scope.ux.updating_user
+              $scope.ux.updating_user = true
+              User.updateUser($scope._e_user)
+              .success (data)->
+                for user, i in $scope.group.users
+                  if user.id == data.id
+                    $scope.group.users[i] = data
+                    break
+                $scope._e_user = {}
+                $scope.ux.updating_user = false
+                flash.to('fl-user-list').success = 'Successfully Updated'
+                $scope.ux.show_edit_user = false
+              .error (data)->
+                flash.to('fl-user-form').error = 'Error saving the user check you filled in all the fields correctly.'
+
+
+          $scope.removeUser = (user_id)->
+            for user, i in $scope.group.users
+              if user.id == user_id
+                $scope.group.users.splice(i, 1)
+                break
+            flash.to('fl-user-list').success = 'Removed!'
+            User.removeUser(user_id)
+            .success (data)->
+              return
+            .error (data)->
+              flash.to('fl-user-list').error = 'Error, sorry bout that!'
 
           $scope.totalSpend = ()->
             total = 0
@@ -86,6 +135,7 @@ angular.module('states.public', [])
               $scope.owing_results.push owing
 
           $scope.calculateWhoPaysWhat = ()->
+            $scope.owing_results = []
             total = $scope.totalSpend()
             num_users = $scope.group.users.length
 
@@ -128,6 +178,10 @@ angular.module('states.public', [])
                     #setting the user and ower new from_even vals
                     user.from_even -= (ower.from_even * -1)
                     ower.from_even = 0
+              for owing in $scope.owing_results
+                for user in $scope.group.users
+                  if user.id == owing.ower.id
+                    user.owings = owing.owings
 
             for owed_user, i in users_order_most_owed
               if owed_user.from_even == 0
@@ -135,6 +189,8 @@ angular.module('states.public', [])
                 return
               else
                 getOwers(owed_user)
+
+                
 
         ]) #end controller
   )

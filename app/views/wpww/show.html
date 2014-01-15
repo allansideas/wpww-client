@@ -5,15 +5,36 @@
     </div>
     <div class="row">
       <div class="col-md-7">
+        <div id="fl-user-list" flash-alert active-class="in"
+          class="text-center fl-border alert fade" duration="2000">
+            <span class="alert-message">{{flash.message}}</span>
+        </div>
+        <p ng-show="group.users.length == 0">No users here yet, add yourself or someone else using the
+        form we kindly opened up for you.</p>
         <table>
           <tr ng-repeat="user in group.users">
-            <td><strong>{{user.name}}</strong>
-              <span ng-show="user.email">({{user.email}})</span></td>
-            <td>${{user.amount_payed_cents}}</td>
-            <td><strong ng-show= "user.description">For:</strong> {{user.description}}</td>
-            <td style="width: 9%;">
-              <i class="m-icon icon-pencil"></i>
-              <i class="m-icon icon-remove"></i>
+            <td>
+              <table>
+                <tr>
+                  <td style="width: 30%;"><strong>{{user.name}}</strong>
+                    <span ng-show="user.email">({{user.email}})</span></td>
+                  <td style="width: 20%;">${{user.amount_payed_cents}}</td>
+                  <td style="width: 40%;">{{user.description}}</td>
+                  <td style="width: 9%;">
+                    <i ng-click="editUser(user)" class="m-icon icon-pencil"></i>
+                    <i ng-click="removeUser(user.id)" class="m-icon icon-remove"></i>
+                  </td>
+                </tr>
+                <tr class="owings">
+                  <td colspan="4" ng-class="{pad: user.owings.length > 0}">
+                    <span ng-show="user.owings.length > 0" ng-repeat="o in user.owings track by $index">
+                      <i ng-show="$index == 0" class="m-icon icon-stack"></i>
+                      <strong ng-show="$index == 0">Owes</strong>
+                      {{o.user.name}} ${{(o.amount / 100).toFixed(2)}}<span ng-show="!$last">, </span>
+                    </span>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>
@@ -39,28 +60,34 @@
           <input id="amount" type="number" ng-model="_user.amount_payed_cents" />
           <label for="description">For:</label>
           <textarea id="description" ng-model="_user.description"></textarea>
-          <button ng-click="addUser()">Save <span
-              ng-show="ux.adding_user"><img src="images/spinner.gif"
-          alt="loading image" /></span></button>
+          <button ng-click="addUser()">Save <span ng-show="ux.adding_user"><img src="images/spinner.gif" alt="loading image" /></span></button>
           <button class="paint clr-4" ng-click="toggleAddUser()">Close</button>
         </form>
+        <form ng-show="ux.show_edit_user">
+          <p><strong>Editing {{_e_user.name}}</strong></p>
+          <div class="row">
+            <div class="col-md-6">
+            <label for="name">Name*</label>
+            <input id="name" type="text" ng-model="_e_user.name" />
+            </div>
+            <div class="col-md-6">
+            <label for="email">Email</label>
+            <input id="email" type="email" ng-model="_e_user.email" />
+            </div>
+          </div>
+
+          <label for="amount">Payed:</label>
+          <input id="amount" type="number" ng-model="_e_user.amount_payed_cents" />
+          <label for="description">For:</label>
+          <textarea id="description" ng-model="_e_user.description"></textarea>
+          <button ng-click="updateUser()">Save <span
+              ng-show="ux.updating_user"><img src="images/spinner.gif"
+          alt="loading image" /></span></button>
+          <button class="paint clr-4" ng-click="toggleEditUser()">Cancel</button>
+        </form>
+        <hr ng-show="ux.show_add_user || ux.show_edit_user" />
         <button class="paint clr-2"
           ng-click="calculateWhoPaysWhat()">Calculate who pays what...</button>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="fw-wrap paint clr-1 m-panel-padded-lg">
-  <div class="container">
-    <div class="row">
-      <div ng-repeat="ower in owing_results track by $index">
-        <strong>{{ower.ower.name}}</strong>
-        must pay
-        <br />
-        <p ng-repeat="o in ower.owings">
-          {{o.user.name}}
-          {{o.amount}}
-        </p>
       </div>
     </div>
   </div>
