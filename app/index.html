@@ -4,6 +4,9 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
+  <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Average+Sans' rel='stylesheet' type='text/css'>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title></title>
@@ -17,7 +20,8 @@
         <!-- endbuild -->
 </head>
   <body ng-app="wpwwClientApp">
-    <div ui-view="main"></div>
+    <div ui-view="main">
+    </div>
 
     <script src="bower_components/angular/angular.js"></script>
 
@@ -28,12 +32,16 @@
         <!-- build:js scripts/modules.js -->
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script
+src="bower_components/angular-flash/dist/angular-flash.js"></script>
+        <script
 src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/states/public.js"></script>
+        <script src="scripts/common/resources/group.js"></script>
+        <script src="scripts/common/resources/user.js"></script>
         <!-- endbuild -->
 </body>
 </html>

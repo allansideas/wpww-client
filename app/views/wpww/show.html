@@ -1,0 +1,67 @@
+<section class="fw-wrap paint clr-1 m-panel-padded-sm m-show">
+  <div class="container">
+    <div class="row">
+      <h2 class="col-md-12">{{group.description}}</h2>
+    </div>
+    <div class="row">
+      <div class="col-md-7">
+        <table>
+          <tr ng-repeat="user in group.users">
+            <td><strong>{{user.name}}</strong>
+              <span ng-show="user.email">({{user.email}})</span></td>
+            <td>${{user.amount_payed_cents}}</td>
+            <td><strong ng-show= "user.description">For:</strong> {{user.description}}</td>
+            <td style="width: 9%;">
+              <i class="m-icon icon-pencil"></i>
+              <i class="m-icon icon-remove"></i>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="m-add-person col-md-5">
+        <button class="m-add-person-toggle" ng-click="toggleAddUser()">Add someone else (or yourself)</button>
+        <div id="fl-user-form" flash-alert active-class="in" class="alert fade">
+            <span class="alert-message">{{flash.message}}</span>
+        </div>
+        <form ng-show="ux.show_add_user">
+          <div class="row">
+            <div class="col-md-6">
+            <label for="name">Name*</label>
+            <input id="name" type="text" ng-model="_user.name" />
+            </div>
+            <div class="col-md-6">
+            <label for="email">Email</label>
+            <input id="email" type="email" ng-model="_user.email" />
+            </div>
+          </div>
+
+          <label for="amount">Payed:</label>
+          <input id="amount" type="number" ng-model="_user.amount_payed_cents" />
+          <label for="description">For:</label>
+          <textarea id="description" ng-model="_user.description"></textarea>
+          <button ng-click="addUser()">Save <span
+              ng-show="ux.adding_user"><img src="images/spinner.gif"
+          alt="loading image" /></span></button>
+          <button class="paint clr-4" ng-click="toggleAddUser()">Close</button>
+        </form>
+        <button class="paint clr-2"
+          ng-click="calculateWhoPaysWhat()">Calculate who pays what...</button>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="fw-wrap paint clr-1 m-panel-padded-lg">
+  <div class="container">
+    <div class="row">
+      <div ng-repeat="ower in owing_results track by $index">
+        <strong>{{ower.ower.name}}</strong>
+        must pay
+        <br />
+        <p ng-repeat="o in ower.owings">
+          {{o.user.name}}
+          {{o.amount}}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

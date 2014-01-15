@@ -4,11 +4,7 @@ angular.module('states.public', [])
     url: '/wpww/new'
     views:
       'main':
-        template: '
-          <h1>Create a new wpww</h1>
-          <input ng-model="group.description" type="text"></div>
-          <button ng-click="createGroup()">Create Group</button>
-          '
+        templateUrl: 'views/wpww/new.html'
         controller: (['$scope', '$state', '$http', ($scope, $state, $http)->
           $scope.group = {}
 
@@ -22,51 +18,44 @@ angular.module('states.public', [])
     url: '/wpww/:identifier'
     views:
       'main':
-        template: '
-          <h2>{{group.description}}</h2>
-          <ul>
-            <li ng-repeat="user in group.users">
-            {{user.name}} : ${{user.amount_payed_cents}}
-            </li>
-          </ul>
-          <form>
-            <p>name*</p>
-            <input type="text" ng-model="_user.name" />
-            <p>email</p>
-            <input type="email" ng-model="_user.email" />
-            <p>amount payed in cents</p>
-            <input type="number" ng-model="_user.amount_payed_cents" />
-            <button ng-click="addUser()">Add someone</button>
-          </form>
-          <button ng-click="calculateWhoPaysWhat()">Calculate who pays what.</button>
-          <div ng-repeat="ower in owing_results track by $index">
-            <strong>{{ower.ower.name}}</strong>
-            must pay
-            <br />
-            <p ng-repeat="o in ower.owings">
-              {{o.user.name}}
-              {{o.amount}}
-            </p>
-          </div>
-          '
-        controller: (['$scope', '$state', '$http', ($scope, $state, $http)->
+        templateUrl: 'views/wpww/show.html'
+        controller: (['$scope', '$state', '$http', 'flash', 'Group', 'User', ($scope, $state, $http, flash, Group, User)->
           $scope.group = {}
           $scope._user = {}
           $scope.owing_results = []
+          $scope.ux = {}
+          $scope.ux.show_add_user = false
+          $scope.ux.adding_user = false
 
-          $http.get("http://localhost:9393/wpww/groups/#{$state.params.identifier}").success (data, status, headers, config)->
+          $scope.toggleAddUser = ()->
+            $scope.ux.show_add_user = ! $scope.ux.show_add_user
+
+          Group.getGroup($state.params.identifier)
+          .success (data)->
             $scope.group = data
-            $http.get("http://localhost:9393/wpww/groups/#{$scope.group.id}/users").success (data, status, headers, config)->
+            User.usersInGroup($scope.group.id)
+            .success (data)->
               $scope.group.users = data
               $scope._user = {}
           .error (data, status, headers, config)->
             alert "Can't find group"
-            
+
           $scope.addUser = ()->
-            $http.post("http://localhost:9393/wpww/groups/#{$scope.group.id}/users", $scope._user).success (data, status, headers, config)->
-              $scope.group.users.push data
-            .error (data, status, headers, config)->
-              #can handle errors here.
+            if !$scope._user.name or !$scope._user.amount_payed_cents
+                flash.to('fl-user-form').error = 'Error saving the user check you filled in all the fields correctly.'
+                $scope.ux.adding_user = false
+                return false
+
+            unless $scope.ux.adding_user
+              $scope.ux.adding_user = true
+              User.createUser($scope.group.id, $scope._user)
+              .success (data)->
+                $scope.group.users.push data
+                $scope._user = {}
+                $scope.ux.adding_user = false
+                flash.to('fl-user-form').success = 'Success! add someone else?'
+              .error (data, status, headers, config)->
+                flash.to('fl-user-form').error = 'Error saving the user check you filled in all the fields correctly.'
 
           $scope.totalSpend = ()->
             total = 0

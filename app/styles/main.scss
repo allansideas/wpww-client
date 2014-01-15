@@ -1,6 +1,150 @@
-$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
+@import 'sass-bootstrap/lib/variables';
+@import 'sass-bootstrap/lib/mixins';
+@import 'sass-bootstrap/lib/normalize';
+@import 'sass-bootstrap/lib/print';
+@import 'sass-bootstrap/lib/scaffolding';
+@import 'sass-bootstrap/lib/type';
+@import 'sass-bootstrap/lib/grid';
+@import 'sass-bootstrap/lib/forms';
+@import 'sass-bootstrap/lib/tables';
+@import 'sass-bootstrap/lib/component-animations';
+@import 'fonts';
+@import 'settings';
 
-@import 'sass-bootstrap/lib/bootstrap';
+html {
+  overflow: -moz-scrollbars-vertical; 
+  overflow-y: scroll;
+}
+
+/* removing dotted line on buttons and clickable input elements for Firefox */
+input[type="submit"]::-moz-focus-inner, input[type="button"]::-moz-focus-inner, button::-moz-focus-inner 
+{ border : solid 1px #333; }
+ 
+/* Remove outline on buttons and clickable input elements for WebKit Browsers & IE8 */
+input[type="submit"]:focus, input[type="button"]:focus, input[type="text"]:focus, button 
+{ outline : 0; }
+button:focus
+{ outline : solid 1px #333; }
+
+//Type
+h1 {
+  font-size: 2.9em;
+  font-family: $font-family-1;
+}
+
+h2, body{
+  font-family: $font-family-2;
+}
+
+.m-panel-padded-lg {
+  padding: 4em 0;
+  h1 {
+    margin-top: 0;
+  }
+
+  h2 {
+    font-family: $font-family-2;
+  }
+}
+
+.input-lg {
+  border: none;
+  padding: 0.4em 0.5em 0.6em 0.5em;
+  font-size: 1.5em;
+}
+
+.input-md {
+  border: none;
+  padding: 0.2em 0.3em 0.3em 0.3em;
+  font-size: 1.2em;
+}
+
+.btn {
+  border: none;
+  display: inline-block;
+}
+
+.btn-lg {
+  padding: 0.4em 0.5em 0.6em 0.5em;
+  font-size: 1.5em;
+}
+
+.btn-md {
+  padding: 0.3em 0.8em 0.5em 0.8em;
+  font-size: 1.2em;
+}
+
+.quick-start {
+  h1 {
+    margin-top: 0.47em;
+  }
+  label {
+    display: block;
+  }
+  input[type=text] {
+    @extend .input-lg;
+    box-shadow: inset 0 0 2px #000000;
+    display: inline-block;
+  }
+  button {
+    @extend .btn;
+    @extend .btn-lg;
+    background-color: $clr-1;
+    color: $clr-2;
+  }
+}
+
+.m-panel-padded-sm {
+  padding: 2em 0;
+}
+.m-add-person-toggle {
+  margin-bottom: 1em;
+}
+
+.m-add-person {
+  form {
+    @include clearfix();
+    margin-bottom: 1em;
+    button {
+      float: right;
+      margin-left: 1em;
+    }
+  }
+  label {
+    display: block;
+  }
+  input, textarea {
+    @extend .input-md;
+    width: 100%;
+    box-shadow: inset 0 0 2px #000000;
+    margin-bottom: 0.5em;
+  }
+}
+
+
+.m-show {
+  h2 {
+    margin-top: 0;
+    font-family: $font-family-1;
+  }
+  table {
+    @extend .table;
+    font-size: 1.1em;
+    tbody > tr > td {
+      border-top: none;
+      border-bottom: dashed 1px $clr-1-contrast-1;
+    }
+  }
+  button {
+    @extend .btn;
+    @extend .btn-md;
+    display: block;
+    background: $clr-3;
+    color: $clr-1;
+    font-weight: bold;
+    //text-shadow: 1px 1px 1px #000
+  }
+}
 
 .browsehappy {
     margin: 0.2em 0;
@@ -9,83 +153,30 @@ $icon-font-path: "/bower_components/sass-bootstrap/fonts/";
     padding: 0.2em 0;
 }
 
-/* Space out content a bit */
-body {
-    padding-top: 20px;
-    padding-bottom: 20px;
+.in.alert {
+  margin-bottom: 1em;
 }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-    padding-left: 15px;
-    padding-right: 15px;
+.alert-success {
+  color: $clr-3;
+  font-weight: bold;
 }
 
-/* Custom page header */
-.header {
-    border-bottom: 1px solid #e5e5e5;
+.alert-error {
+  color: $clr-4;
+  font-weight: bold;
 }
 
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 40px;
-    padding-bottom: 19px;
+.icon-pencil {
+  margin-right: 0.2em;
+  &:hover {
+    text-shadow: 0 0 4px $clr-3;
+  }
 }
-
-/* Custom page footer */
-.footer {
-    padding-top: 19px;
-    color: #777;
-    border-top: 1px solid #e5e5e5;
-}
-
-.container-narrow > hr {
-    margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-    text-align: center;
-    border-bottom: 1px solid #e5e5e5;
-}
-
-.jumbotron .btn {
-    font-size: 21px;
-    padding: 14px 24px;
-}
-
-/* Supporting marketing content */
-.marketing {
-    margin: 40px 0;
-}
-
-.marketing p + h4 {
-    margin-top: 28px;
-}
-
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-    .container {
-        max-width: 730px;
-    }
-
-    /* Remove the padding we set earlier */
-    .header,
-    .marketing,
-    .footer {
-        padding-left: 0;
-        padding-right: 0;
-    }
-    /* Space out the masthead */
-    .header {
-        margin-bottom: 30px;
-    }
-    /* Remove the bottom border on the jumbotron for visual effect */
-    .jumbotron {
-        border-bottom: 0;
-    }
+.icon-remove {
+  color: $clr-4;
+  margin-right: 0.2em;
+  &:hover {
+    text-shadow: 0 0 4px $clr-4;
+  }
 }
