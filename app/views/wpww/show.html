@@ -1,36 +1,40 @@
 <section class="fw-wrap paint clr-1 m-panel-padded-sm m-show">
   <div class="container">
     <div class="row">
-      <h2 class="col-md-12">{{group.description}}</h2>
+      <div class="col-md-12">
+        <h2 >{{group.description}}</h2>
+        <span id="fl-user-list" flash-alert active-class="in" class="text-center fl-border alert fade" duration="2000">
+            <span class="alert-message">{{flash.message}}</span>
+        </span>
+      </div>
     </div>
     <div class="row">
       <div class="col-md-7">
-        <div id="fl-user-list" flash-alert active-class="in"
-          class="text-center fl-border alert fade" duration="2000">
-            <span class="alert-message">{{flash.message}}</span>
-        </div>
         <p ng-show="group.users.length == 0">No users here yet, add yourself or someone else using the
         form we kindly opened up for you.</p>
         <table>
-          <tr ng-repeat="user in group.users">
+          <tr class="repeat-item" ng-repeat="user in group.users" >
             <td>
               <table>
-                <tr>
-                  <td style="width: 30%;"><strong>{{user.name}}</strong>
-                    <span ng-show="user.email">({{user.email}})</span></td>
-                  <td style="width: 20%;">${{user.amount_payed_cents}}</td>
-                  <td style="width: 40%;">{{user.description}}</td>
+                <tr ng-class="{'owings-user': user.owings.length > 0}">
+                  <td style="width: 30%;"><strong ng-class="{clr-2:
+                      user.owings.length > 0}">{{user.name}}</strong> <small ng-show="user.email">({{user.email}})</small></td>
+                  <td style="width: 20%;">${{(user.amount_paid_cents /
+                    100).toFixed(2)}}</td>
+                  <td style="width:
+                    40%;"><small>{{user.description}}</small></td>
                   <td style="width: 9%;">
                     <i ng-click="editUser(user)" class="m-icon icon-pencil"></i>
                     <i ng-click="removeUser(user.id)" class="m-icon icon-remove"></i>
                   </td>
                 </tr>
-                <tr class="owings">
-                  <td colspan="4" ng-class="{pad: user.owings.length > 0}">
+                <tr class="owings-row">
+                  <td colspan="4" ng-class="{'owings-owing': user.owings.length > 0}">
+                    <span ng-show=" user.owings.length > 0 && (ux.adding_user || ux.updating_user || ux.deleting_user)"><img src="images/spinner.gif" alt="loading image" /></span>
                     <span ng-show="user.owings.length > 0" ng-repeat="o in user.owings track by $index">
                       <i ng-show="$index == 0" class="m-icon icon-stack"></i>
                       <strong ng-show="$index == 0">Owes</strong>
-                      {{o.user.name}} ${{(o.amount / 100).toFixed(2)}}<span ng-show="!$last">, </span>
+                      <em>{{o.user.name}}</em> ${{(o.amount / 100).toFixed(2)}}<span ng-show="!$last">, </span>
                     </span>
                   </td>
                 </tr>
@@ -44,7 +48,7 @@
         <div id="fl-user-form" flash-alert active-class="in" class="alert fade">
             <span class="alert-message">{{flash.message}}</span>
         </div>
-        <form ng-show="ux.show_add_user">
+        <form ng-show="ux.show_add_user" novalidate>
           <div class="row">
             <div class="col-md-6">
             <label for="name">Name*</label>
@@ -56,14 +60,16 @@
             </div>
           </div>
 
-          <label for="amount">Payed:</label>
-          <input id="amount" type="number" ng-model="_user.amount_payed_cents" />
+          <label for="amount">Paid:</label>
+          <input ng-show="!ux.adding_user" id="amount" type="number" ng-model="_user.amount_paid_cents" />
+          <input ng-show="ux.adding_user" id="amount" type="number"
+          value="{{_user.amount_paid_cents / 100}}" />
           <label for="description">For:</label>
           <textarea id="description" ng-model="_user.description"></textarea>
           <button ng-click="addUser()">Save <span ng-show="ux.adding_user"><img src="images/spinner.gif" alt="loading image" /></span></button>
           <button class="paint clr-4" ng-click="toggleAddUser()">Close</button>
         </form>
-        <form ng-show="ux.show_edit_user">
+        <form ng-show="ux.show_edit_user" novalidate>
           <p><strong>Editing {{_e_user.name}}</strong></p>
           <div class="row">
             <div class="col-md-6">
@@ -76,8 +82,10 @@
             </div>
           </div>
 
-          <label for="amount">Payed:</label>
-          <input id="amount" type="number" ng-model="_e_user.amount_payed_cents" />
+          <label for="amount">Paid:</label>
+          <input ng-show="!ux.updating_user" id="amount" type="number" ng-model="_e_user.amount_paid_cents" />
+          <input ng-show="ux.updating_user" id="amount" type="number"
+          value="{{_e_user.amount_paid_cents / 100}}" />
           <label for="description">For:</label>
           <textarea id="description" ng-model="_e_user.description"></textarea>
           <button ng-click="updateUser()">Save <span
@@ -86,8 +94,21 @@
           <button class="paint clr-4" ng-click="toggleEditUser()">Cancel</button>
         </form>
         <hr ng-show="ux.show_add_user || ux.show_edit_user" />
-        <button class="paint clr-2"
-          ng-click="calculateWhoPaysWhat()">Calculate who pays what...</button>
+        <div class="row">
+          <p ng-show="even_split" class="col-md-12">To balance to everyone pays: ${{(even_split /100 ).toFixed(2)}}</p>
+        </div>
+        <div class="row">
+          <p class="col-md-12"><small>(Calculations are automatically
+            performed each time you edit, add, or remove a user.)</small></p>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="padded-inner paint clr-2">
+              <p >Share this page with others</p>
+              <textarea id="share" ng-click="selectText()" class="small-textarea" type="text">{{url}}</textarea>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 angular.module('wpwwClientApp', [
   'ngSanitize'
+  'ngAnimate'
   'ui.router'
   'angular-flash.service'
   'angular-flash.flash-alert-directive'

@@ -6,8 +6,8 @@ angular.module('resources.users', [])
     return false
   updateUser: (user)->
     $http.put("http://localhost:9393/wpww/users/#{user.id}", user)
-  createUser: (group_id, user_data)->
-    $http.post("http://localhost:9393/wpww/groups/#{group_id}/users", user_data)
+  createUser: (group_id, user)->
+    $http.post("http://localhost:9393/wpww/groups/#{group_id}/users", user)
   removeUser: (user_id)->
     $http.delete("http://localhost:9393/wpww/users/#{user_id}")
 
