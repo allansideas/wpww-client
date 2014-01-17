@@ -1,7 +1,7 @@
 angular.module('states.public', [])
 .config(['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouterProvider)->
   $stateProvider.state('new_wpww',
-    url: '/wpww/new'
+    url: '/'
     views:
       'main':
         templateUrl: 'views/wpww/new.html'
