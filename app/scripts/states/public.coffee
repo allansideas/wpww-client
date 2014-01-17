@@ -28,6 +28,7 @@ angular.module('states.public', [])
           $scope.ux.adding_user = false
           $scope.ux.updating_user = false
           $scope.ux.deleting_user = false
+          $scope.ux.loaded = false
           $scope.url = window.location.origin + window.location.hash
           $scope.selectText = ()->
             document.getElementById('share').select()
@@ -42,13 +43,17 @@ angular.module('states.public', [])
             $scope.group = data
             User.usersInGroup($scope.group.id)
             .success (data)->
+              console.log $scope.ux.loaded
               $scope.group.users = data.reverse()
               if $scope.group.users.length == 0
                 $scope.ux.show_add_user = true
               else
                 $scope.calculateWhoPaysWhat()
+              $scope.ux.loaded = true
+            .error (data)->
+              $state.go("new_wpww")
           .error (data, status, headers, config)->
-            alert "Can't find group"
+            $state.go("new_wpww")
 
           validateUser = (user, flash_target)->
             if !user.name or !user.amount_paid_cents

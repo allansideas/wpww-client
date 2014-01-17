@@ -13,3 +13,19 @@
   opacity:1;
 }
 
+
+.a-show-fade {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  opacity:1;
+}
+ 
+.a-show-fade.ng-hide-add,
+.a-show-fade.ng-hide-remove {
+  display:block!important;
+}
+ 
+.a-show-fade.ng-hide {
+  opacity:0;
+}
+ 

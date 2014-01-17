@@ -1,4 +1,4 @@
-<section class="fw-wrap paint clr-1 m-panel-padded-sm m-show">
+<section ng-show="ux.loaded" class="fw-wrap paint clr-1 m-panel-padded-sm m-show a-show-fade">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -17,8 +17,8 @@
             <td>
               <table>
                 <tr ng-class="{'owings-user': user.owings.length > 0}">
-                  <td style="width: 30%;"><strong ng-class="{clr-2:
-                      user.owings.length > 0}">{{user.name}}</strong> <small ng-show="user.email">({{user.email}})</small></td>
+                  <td style="width: 30%;"><strong ng-class="{'clr-2':
+                      user.owings.length > 0}">{{user.name}}</strong><small ng-show="user.email">({{user.email}})</small></td>
                   <td style="width: 20%;">${{(user.amount_paid_cents /
                     100).toFixed(2)}}</td>
                   <td style="width:
