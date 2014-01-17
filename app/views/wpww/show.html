@@ -1,17 +1,13 @@
 <section ng-show="ux.loaded" class="fw-wrap paint clr-1 m-panel-padded-sm m-show a-show-fade">
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
-        <h2 >{{group.description}}</h2>
-        <span id="fl-user-list" flash-alert active-class="in" class="text-center fl-border alert fade" duration="2000">
+      <div class="col-md-7">
+        <h2 >{{group.name}}</h2>
+        <span id="fl-user-list" flash-alert active-class="in" class="text-center fl-border alert fade" duration="4000">
             <span class="alert-message">{{flash.message}}</span>
         </span>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-7">
-        <p ng-show="group.users.length == 0">No users here yet, add yourself or someone else using the
-        form we kindly opened up for you.</p>
+        <p>{{group.description}}</p>
+        <p ng-show="group.users.length == 0"><strong "clr-4">No users here yet, add yourself or someone else using the form we kindly opened up for you.</strong></p>
         <table>
           <tr class="repeat-item" ng-repeat="user in group.users" >
             <td>
@@ -95,7 +91,7 @@
         </form>
         <hr ng-show="ux.show_add_user || ux.show_edit_user" />
         <div class="row">
-          <p ng-show="even_split" class="col-md-12">To balance to everyone pays: ${{(even_split /100 ).toFixed(2)}}</p>
+          <p ng-show="even_split" class="col-md-12">Even split of total: ${{(even_split /100 ).toFixed(2)}}</p>
         </div>
         <div class="row">
           <p class="col-md-12"><small>(Calculations are automatically

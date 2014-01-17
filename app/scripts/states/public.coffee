@@ -7,8 +7,14 @@ angular.module('states.public', [])
         templateUrl: 'views/wpww/new.html'
         controller: (['$scope', '$state', '$http', ($scope, $state, $http)->
           $scope.group = {}
+          $scope.ux = {}
+          $scope.ux.creating = false
+          $scope.ux.add_description = false
 
           $scope.createGroup = ()->
+            if !$scope.group.name
+              return false
+            $scope.ux.creating = true
             $http.post('http://localhost:9393/wpww/groups', $scope.group).success (data, status, headers, config)->
               $state.go('wpww', identifier: data.identifier)
             .error (data, status, headers, config)->
@@ -19,7 +25,17 @@ angular.module('states.public', [])
     views:
       'main':
         templateUrl: 'views/wpww/show.html'
-        controller: (['$scope', '$state', '$http', 'flash', 'Group', 'User', ($scope, $state, $http, flash, Group, User)->
+        resolve: 
+          loadedGroup: ['Group', '$stateParams', (Group, $stateParams)->
+            Group.getGroup($stateParams.identifier)
+          ]
+          loadedUsers: ['loadedGroup', 'User', (loadedGroup, User)->
+            if loadedGroup.data != 'null'
+              User.usersInGroup(loadedGroup.data.id)
+            else
+              return false
+          ]
+        controller: (['$scope', '$state', '$http', 'flash', 'loadedGroup', 'loadedUsers', 'User', ($scope, $state, $http, flash, loadedGroup, loadedUsers, User)->
           $scope.group = {}
           $scope._user = {}
           $scope.ux = {}
@@ -38,22 +54,18 @@ angular.module('states.public', [])
           $scope.toggleEditUser = ()->
             $scope.ux.show_edit_user = ! $scope.ux.show_edit_user
 
-          Group.getGroup($state.params.identifier)
-          .success (data)->
-            $scope.group = data
-            User.usersInGroup($scope.group.id)
-            .success (data)->
-              console.log $scope.ux.loaded
-              $scope.group.users = data.reverse()
+          loadData = ()->
+            if !loadedUsers
+              $state.go('new_wpww')
+
+            if loadedGroup.data? && loadedUsers.data?
+              $scope.group = loadedGroup.data
+              $scope.group.users = loadedUsers.data
+              $scope.ux.loaded = true
               if $scope.group.users.length == 0
                 $scope.ux.show_add_user = true
               else
                 $scope.calculateWhoPaysWhat()
-              $scope.ux.loaded = true
-            .error (data)->
-              $state.go("new_wpww")
-          .error (data, status, headers, config)->
-            $state.go("new_wpww")
 
           validateUser = (user, flash_target)->
             if !user.name or !user.amount_paid_cents
@@ -195,6 +207,7 @@ angular.module('states.public', [])
               else
                 getOwers(owed_user)
 
+          loadData()
         ]) #end controller
   )
 

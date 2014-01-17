@@ -11,6 +11,10 @@ $clr-4-contrast-1: #595959;
   color: $clr-2;
 }
 
+.clr-4 {
+  color: $clr-4;
+}
+
 .paint {
   &.clr-1 {
     background: $clr-1;
@@ -20,6 +24,12 @@ $clr-4-contrast-1: #595959;
   &.clr-2 {
     background: $clr-2;
     color: $clr-2-contrast-1;
+    a {
+      color: $clr-2-contrast-1;
+    }
+    a:hover {
+      color: lighten($clr-2-contrast-1, 15%);
+    }
   }
 
   &.clr-3 {

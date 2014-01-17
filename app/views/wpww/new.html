@@ -5,7 +5,7 @@
         <h1 class="text-right">Who owes who what?</h1>
         <h2 class="text-right">a good times calculator...</h2>
       </div>
-      <div class="col-md-5">
+      <div class="col-md-6">
         <p>You know when you go on a group trip with your mates and you
         are all splitting costs, Terry pays for the gas in Taupo,
         while Sarah in the other car grabs a few doz tui... fast forward
@@ -21,11 +21,17 @@
       <div class="col-md-6">
         <h1 class="text-right">Quick start: </h1>
       </div>
-      <div class="col-md-5">
-        <label for="description">Name it: (e.g. Northland road trip)</label>
+      <div class="col-md-6">
         <form ng-submit="createGroup()">
-          <input id="description" ng-model="group.description" type="text">
-          <button class="paint clr-3">Create it</button>
+          <label for="name">Name it: (e.g. Northland road trip)</label>
+          <input id="name" ng-model="group.name" type="text">
+          <button class="paint clr-3">
+            Create it <span><img ng-show="ux.creating" src="images/spinner.gif" alt="loading image" /></span>
+          </button>
+          <div>
+            <a href="" ng-click="ux.add_description = !ux.add_description">Add a description?<a>
+            <textarea  ng-show="ux.add_description" ng-model="group.description"></textarea>
+          </div>
         </form>
       </div>
     </div>
