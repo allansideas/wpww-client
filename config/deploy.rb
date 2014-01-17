@@ -15,11 +15,11 @@ set :default_stage, "staging"
 # if you're still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
 
-set :deploy_to, "/home/woww/#{application}/client/"
+set :deploy_to, "/home/#{application}/client/"
 task :staging do
   role :web, "woww@taglich.instantiate.me"
   role :app, "woww@taglich.instantiate.me"
-  set :deploy_to, "/home/woww/#{application}/client/"
+  set :deploy_to, "/home/#{application}/client/"
 end
 
 namespace :deploy do
