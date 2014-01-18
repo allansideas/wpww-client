@@ -29,7 +29,9 @@
             Create it <span><img ng-show="ux.creating" src="images/spinner.gif" alt="loading image" /></span>
           </button>
           <div>
-            <a href="" ng-click="ux.add_description = !ux.add_description">Add a description?<a>
+            <p>
+              <a href="" ng-click="ux.add_description = !ux.add_description">Add a description?<a>
+            </p>
             <textarea  ng-show="ux.add_description" ng-model="group.description"></textarea>
           </div>
         </form>

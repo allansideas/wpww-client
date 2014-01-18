@@ -95,7 +95,6 @@ h2, body{
     width: 70%;
   }
   a {
-    display: block;
     padding: 0.2em 0 0.3em 0;
   }
   textarea {
@@ -107,8 +106,6 @@ h2, body{
   button {
     @extend .btn;
     @extend .btn-lg;
-    background-color: $clr-1;
-    color: $clr-2;
     width: 28%;
   }
 }
@@ -188,8 +185,6 @@ h2, body{
     @extend .btn;
     @extend .btn-md;
     display: block;
-    background: $clr-3;
-    color: $clr-1;
     font-weight: bold;
     //text-shadow: 1px 1px 1px #000
   }

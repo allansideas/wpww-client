@@ -40,7 +40,18 @@ $clr-4-contrast-1: #595959;
   &.clr-4 {
     background: $clr-4;
     color: $clr-1;
+    a:hover, button:hover {
+      background: lighten($clr-4, 5%);
+    }
   }
+}
+
+button.paint.clr-3:hover {
+  background: lighten($clr-3, 5%);
+}
+
+button.paint.clr-4:hover {
+  background: lighten($clr-4, 5%);
 }
 
 $font-family-1: "Fjalla One", "Helvetica Neue", Helvetica, Arial, sans-serif !default; 

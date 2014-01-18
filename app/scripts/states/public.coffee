@@ -5,7 +5,7 @@ angular.module('states.public', [])
     views:
       'main':
         templateUrl: 'views/wpww/new.html'
-        controller: (['$scope', '$state', '$http', ($scope, $state, $http)->
+        controller: (['$scope', '$state', '$http', 'API', ($scope, $state, $http, API)->
           $scope.group = {}
           $scope.ux = {}
           $scope.ux.creating = false
@@ -15,9 +15,10 @@ angular.module('states.public', [])
             if !$scope.group.name
               return false
             $scope.ux.creating = true
-            $http.post('http://localhost:9393/wpww/groups', $scope.group).success (data, status, headers, config)->
+            $http.post("http://#{API}/wpww/groups", $scope.group).success (data)->
               $state.go('wpww', identifier: data.identifier)
-            .error (data, status, headers, config)->
+            .error (data)->
+              console.log data
               #can handle errors here.
         ]) #end controller
   ).state('wpww',
@@ -45,7 +46,8 @@ angular.module('states.public', [])
           $scope.ux.updating_user = false
           $scope.ux.deleting_user = false
           $scope.ux.loaded = false
-          $scope.url = window.location.origin + window.location.hash
+          $scope.getUrl = ()->
+            window.location.origin + window.location.hash
           $scope.selectText = ()->
             document.getElementById('share').select()
           $scope.toggleAddUser = ()->
@@ -208,6 +210,7 @@ angular.module('states.public', [])
                 getOwers(owed_user)
 
           loadData()
+          $scope.url = $scope.getUrl()
         ]) #end controller
   )
 

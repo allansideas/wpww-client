@@ -40,7 +40,7 @@
         </table>
       </div>
       <div class="m-add-person col-md-5">
-        <button class="m-add-person-toggle" ng-click="toggleAddUser()">Add someone else (or yourself)</button>
+        <button class="m-add-person-toggle paint clr-3" ng-click="toggleAddUser()">Add someone else (or yourself)</button>
         <div id="fl-user-form" flash-alert active-class="in" class="alert fade">
             <span class="alert-message">{{flash.message}}</span>
         </div>
@@ -62,7 +62,7 @@
           value="{{_user.amount_paid_cents / 100}}" />
           <label for="description">For:</label>
           <textarea id="description" ng-model="_user.description"></textarea>
-          <button ng-click="addUser()">Save <span ng-show="ux.adding_user"><img src="images/spinner.gif" alt="loading image" /></span></button>
+          <button class="paint clr-3" ng-click="addUser()">Save <span ng-show="ux.adding_user"><img src="images/spinner.gif" alt="loading image" /></span></button>
           <button class="paint clr-4" ng-click="toggleAddUser()">Close</button>
         </form>
         <form ng-show="ux.show_edit_user" novalidate>
@@ -84,7 +84,7 @@
           value="{{_e_user.amount_paid_cents / 100}}" />
           <label for="description">For:</label>
           <textarea id="description" ng-model="_e_user.description"></textarea>
-          <button ng-click="updateUser()">Save <span
+          <button ng-click="updateUser()" class="paint clr-3">Save <span
               ng-show="ux.updating_user"><img src="images/spinner.gif"
           alt="loading image" /></span></button>
           <button class="paint clr-4" ng-click="toggleEditUser()">Cancel</button>
