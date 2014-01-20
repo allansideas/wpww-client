@@ -38,6 +38,19 @@
             </td>
           </tr>
         </table>
+        <div class="comments">
+          <h4>Discussion:</h4>
+          <p ng-show="group.comments.length == 0"><strong "clr-4">No discussion here yet.</strong></p>
+          <div ng-repeat="comment in group.comments" class="comment">
+            <p>{{comment.body}}</p>
+            <div class="top-right"><small>{{comment.created_at | date:'dd MMM, h:mma'}}</small></div>
+          </div>
+          <form ng-submit="addComment()">
+            <label for="comment-body">Discuss:</label>
+            <textarea id="comment-body" ng-model="_comment.body"></textarea>
+            <button class="paint clr-3">Save comment</button>
+          </form>
+        </div>
       </div>
       <div class="m-add-person col-md-5">
         <button class="m-add-person-toggle paint clr-3" ng-click="toggleAddUser()">Add someone else (or yourself)</button>
@@ -56,11 +69,11 @@
             </div>
           </div>
 
-          <label for="amount">Paid:</label>
+          <label for="amount">Paid*</label>
           <input ng-show="!ux.adding_user" id="amount" type="number" ng-model="_user.amount_paid_cents" />
           <input ng-show="ux.adding_user" id="amount" type="number"
           value="{{_user.amount_paid_cents / 100}}" />
-          <label for="description">For:</label>
+          <label for="description">For</label>
           <textarea id="description" ng-model="_user.description"></textarea>
           <button class="paint clr-3" ng-click="addUser()">Save <span ng-show="ux.adding_user"><img src="images/spinner.gif" alt="loading image" /></span></button>
           <button class="paint clr-4" ng-click="toggleAddUser()">Close</button>
@@ -101,7 +114,7 @@
           <div class="col-md-12">
             <div class="padded-inner paint clr-2">
               <p >Share this page with others</p>
-              <textarea id="share" ng-click="selectText()" class="small-textarea" type="text">{{url}}</textarea>
+              <textarea id="share" ng-click="selectText()" class="small-textarea" type="text">{{'http://woww.instantiate.me/#/wpww/' + group.identifier}}</textarea>
             </div>
           </div>
         </div>

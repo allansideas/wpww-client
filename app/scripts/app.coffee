@@ -7,9 +7,10 @@ angular.module('wpwwClientApp', [
   'states.public'
   'resources.groups'
   'resources.users'
+  'resources.comments'
 ])
-#.constant("API", "localhost:9393")
-.constant("API", "api.woww.instantiate.me")
+.constant("API", "localhost:9393")
+#.constant("API", "api.woww.instantiate.me")
 .config(['$urlRouterProvider', ($urlRouterProvider) ->
     $urlRouterProvider.otherwise('/')
   ])

@@ -36,18 +36,24 @@ angular.module('states.public', [])
             else
               return false
           ]
-        controller: (['$scope', '$state', '$http', 'flash', 'loadedGroup', 'loadedUsers', 'User', ($scope, $state, $http, flash, loadedGroup, loadedUsers, User)->
+          loadedComments: ['loadedGroup', 'Comment', (loadedGroup, Comment)->
+            if loadedGroup.data != 'null'
+              Comment.commentsInGroup(loadedGroup.data.id)
+            else
+              return false
+          ]
+        controller: (['$scope', '$state', '$http', 'flash', 'loadedGroup', 'loadedUsers', 'User', 'loadedComments', 'Comment', ($scope, $state, $http, flash, loadedGroup, loadedUsers, User, loadedComments, Comment)->
           $scope.group = {}
           $scope._user = {}
+          $scope._comment = {}
           $scope.ux = {}
           $scope.ux.show_add_user = false
           $scope.ux.show_edit_user = false
           $scope.ux.adding_user = false
           $scope.ux.updating_user = false
           $scope.ux.deleting_user = false
+          $scope.ux.adding_comment = false
           $scope.ux.loaded = false
-          $scope.getUrl = ()->
-            window.location.origin + window.location.hash
           $scope.selectText = ()->
             document.getElementById('share').select()
           $scope.toggleAddUser = ()->
@@ -63,6 +69,7 @@ angular.module('states.public', [])
             if loadedGroup.data? && loadedUsers.data?
               $scope.group = loadedGroup.data
               $scope.group.users = loadedUsers.data
+              $scope.group.comments = loadedComments.data.reverse()
               $scope.ux.loaded = true
               if $scope.group.users.length == 0
                 $scope.ux.show_add_user = true
@@ -78,15 +85,23 @@ angular.module('states.public', [])
             else
               return true
 
+          $scope.addComment = ()->
+            unless $scope.ux.adding_comment or !$scope._comment.body
+              $scope.ux.adding_comment = true
+              Comment.createComment($scope.group.id, $scope._comment)
+              .success (data)->
+                $scope.group.comments.unshift data
+                $scope._comment = {}
+                $scope.ux.adding_comment = false
+              .error (data)->
+                flash.to('fl-user-form').error = 'Error saving the comment check you filled in all the fields correctly.'
+
           $scope.addUser = ()->
             if !validateUser($scope._user, 'fl-user-form')
               return false
             unless $scope.ux.adding_user
               $scope.ux.adding_user = true
-              console.log $scope._user
-              console.log $scope._user.amount_paid_cents
               $scope._user.amount_paid_cents = parseFloat($scope._user.amount_paid_cents) * 100
-              console.log $scope._user
               User.createUser($scope.group.id, $scope._user)
               .success (data)->
                 $scope.group.users.unshift data
@@ -210,7 +225,6 @@ angular.module('states.public', [])
                 getOwers(owed_user)
 
           loadData()
-          $scope.url = $scope.getUrl()
         ]) #end controller
   )
 
