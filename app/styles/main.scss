@@ -7,6 +7,7 @@
 @import 'sass-bootstrap/lib/grid';
 //@import 'sass-bootstrap/lib/forms';
 @import 'sass-bootstrap/lib/tables';
+@import 'sass-bootstrap/lib/dropdowns';
 @import 'sass-bootstrap/lib/component-animations';
 @import 'fonts';
 @import 'settings';
@@ -165,6 +166,9 @@ h2, body{
       padding: 0.3em 0;
       //background: lighten($clr-1, 2%);
     }
+  }
+  .line-items-row td {
+    padding: 0.2em;
   }
   .owings-row td {
     color: $clr-2;

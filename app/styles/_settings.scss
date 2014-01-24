@@ -21,6 +21,11 @@ $clr-4-contrast-1: #595959;
     color: $clr-1-contrast-1;
   }
 
+  &.clr-1-light {
+    background: lighten($clr-1, 10%);
+    color: $clr-1-contrast-1;
+  }
+
   &.clr-2 {
     background: $clr-2;
     color: $clr-2-contrast-1;

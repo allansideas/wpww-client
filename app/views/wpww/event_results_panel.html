@@ -1,0 +1,58 @@
+<div>
+  <h2 >{{group.name}}</h2>
+  <span id="fl-user-list" flash-alert active-class="in" class="text-center fl-border alert fade" duration="4000">
+      <span class="alert-message">{{flash.message}}</span>
+  </span>
+  <p>{{group.description}}</p>
+  <p ng-show="group.users.length == 0"><strong "clr-4">No users here yet, add yourself or someone else using the form we kindly opened up for you.</strong></p>
+  <table>
+    <tr class="repeat-item" ng-repeat="user in group.users" >
+      <td>
+        <table>
+          <tr ng-class="{'owings-user': user.owings.length > 0}">
+            <td style="width: 30%;"><strong ng-class="{'clr-2':
+                user.owings.length > 0}">{{user.name}} </strong><br /><small ng-show="user.email">({{user.email}})</small></td>
+            <td style="width: 61%;" ><strong>${{(user.amount_paid_cents / 100).toFixed(2)}}</strong></td>
+            <td style="width: 9%;" >
+              <i ng-click="editUser(user)" class="m-icon icon-pencil"></i>
+              <i ng-click="removeUser(user.id)" class="m-icon icon-remove"></i>
+            </td>
+          </tr>
+          <tr ng-repeat="li in user.line_items" class="line-items-row">
+            <td style="text-align: right; font-size: 0.8em">
+              <i ng-click="removeLineItem(li)" class="m-icon icon-remove"></i>
+            </td>
+            <td class="paint clr-1-light" >
+              ${{(li.amount_in_cents / 100).toFixed(2)}}: {{li.name}}
+            </td>
+            <td class="paint clr-1-light" >
+            </td>
+          </tr>
+          <tr class="owings-row">
+            <td colspan="3" style="text-align: right;" ng-class="{'owings-owing': user.owings.length > 0}">
+              <span ng-show=" user.owings.length > 0 && (ux.adding_user || ux.updating_user || ux.deleting_user)"><img src="images/spinner.gif" alt="loading image" /></span>
+              <span ng-show="user.owings.length > 0" ng-repeat="o in user.owings track by $index">
+                <strong ng-show="$index == 0">{{user.name}}</strong>
+                <i ng-show="$index == 0" style="font-size: 0.8em; margin-bottom: 3px;" class="m-icon icon-arrow-right"></i>
+                <span>{{o.user.name}}:</span> <strong>${{(o.amount / 100).toFixed(2)}}</strong><span ng-show="!$last">, </span>
+              </span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <div class="comments">
+    <h4>Discussion:</h4>
+    <p ng-show="group.comments.length == 0"><strong "clr-4">No discussion here yet.</strong></p>
+    <div ng-repeat="comment in group.comments" class="comment">
+      <p>{{comment.body}}</p>
+      <div class="top-right"><small>{{comment.created_at | date:'dd MMM, h:mma'}}</small></div>
+    </div>
+    <form ng-submit="addComment()">
+      <label for="comment-body">Discuss:</label>
+      <textarea id="comment-body" ng-model="_comment.body"></textarea>
+      <button class="paint clr-3">Save comment</button>
+    </form>
+  </div>
+</div>

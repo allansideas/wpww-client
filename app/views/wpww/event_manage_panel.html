@@ -1,0 +1,81 @@
+<div class="m-add-person">
+  <button class="m-add-person-toggle paint clr-3" ng-click="toggleAddUser()">Add someone else (or yourself)</button>
+  <div id="fl-user-form" flash-alert active-class="in" class="alert fade">
+      <span class="alert-message">{{flash.message}}</span>
+  </div>
+  <form ng-show="ux.show_add_user" novalidate>
+    <div class="row">
+      <div class="col-md-6">
+      <label for="name">Name*</label>
+      <input id="name" type="text" ng-model="_user.name" />
+      </div>
+      <div class="col-md-6">
+      <label for="email">Email</label>
+      <input id="email" type="email" ng-model="_user.email" />
+      </div>
+    </div>
+    <!--<label for="amount">Paid*</label>-->
+    <!--<input ng-show="!ux.adding_user" id="amount" type="number" ng-model="_user.amount_paid_cents" />-->
+    <!--<input ng-show="ux.adding_user" id="amount" type="number" value="{{_user.amount_paid_cents / 100}}" />-->
+    <!--<label for="description">For</label>-->
+    <!--<textarea id="description" ng-model="_user.description"></textarea>-->
+    <button class="paint clr-3" ng-click="addUser()">Save <span ng-show="ux.adding_user"><img src="images/spinner.gif" alt="loading image" /></span></button>
+    <button class="paint clr-4" ng-click="toggleAddUser()">Close</button>
+  </form>
+  <form ng-show="ux.show_edit_user" novalidate>
+    <p><strong>Editing {{_e_user.name}}</strong></p>
+    <div class="row">
+      <div class="col-md-6">
+      <label for="name">Name*</label>
+      <input id="name" type="text" ng-model="_e_user.name" />
+      </div>
+      <div class="col-md-6">
+      <label for="email">Email</label>
+      <input id="email" type="email" ng-model="_e_user.email" />
+      </div>
+    </div>
+    <!--<label for="amount">Paid:</label>-->
+    <!--<input ng-show="!ux.updating_user" id="amount" type="number" ng-model="_e_user.amount_paid_cents" />-->
+    <!--<input ng-show="ux.updating_user" id="amount" type="number" value="{{_e_user.amount_paid_cents / 100}}" />-->
+    <!--<label for="description">For:</label>-->
+    <!--<textarea id="description" ng-model="_e_user.description"></textarea>-->
+    <button ng-click="updateUser()" class="paint clr-3">Save 
+      <span ng-show="ux.updating_user"><img src="images/spinner.gif" alt="loading image" /></span>
+    </button>
+    <button class="paint clr-4" ng-click="toggleEditUser()">Cancel</button>
+  </form>
+  <hr ng-show="ux.show_add_user || ux.show_edit_user" />
+  <div class="row">
+    <p ng-show="even_split" class="col-md-12">Even split of total: ${{(even_split /100 ).toFixed(2)}}</p>
+  </div>
+  <div class="row">
+    <p class="col-md-12"><small>(Calculations are automatically
+      performed each time you edit, add, or remove a user.)</small></p>
+  </div>
+  <form novalidate>
+    <h3>Add an expense</h3>
+    <div class="row">
+      <div class="col-md-6">
+        <label for="user_name">For who?</label>
+        <input id="user_name" type="text" ng-model="_line_item.user" typeahead="user as user.name for user in group.users | filter:{name: $viewValue} | limitTo:8" typeahead-editable="true" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label for="line_item_amount">Amount payed</label>
+        <input id="line_item_amount" ng-model="_line_item.amount_in_cents" type="number" />
+      </div>
+    </div>
+    <label for="line_item_name">What was it?</label>
+    <input id="line_item_name" type="text" ng-model="_line_item.name" />
+    <button class="paint clr-3" ng-click="addLineItem()">Save
+      <span ng-show="ux.adding_line_item"><img src="images/spinner.gif" alt="loading image" /></span>
+    </button>
+  </form>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="padded-inner paint clr-2">
+        <p >Share this page with others</p>
+        <textarea id="share" ng-click="selectText()" class="small-textarea" type="text">{{'http://woww.instantiate.me/#/event/' + group.identifier + '/show'}}</textarea>
+      </div>
+    </div>
+  </div>
+</div>
