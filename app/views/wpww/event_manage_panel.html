@@ -1,9 +1,17 @@
 <div class="m-add-person">
-  <button class="m-add-person-toggle paint clr-3" ng-click="toggleAddUser()">Add someone else (or yourself)</button>
+  <!--<button class="m-add-person-toggle paint clr-3" ng-click="toggleAddUser()">Add someone else (or yourself)</button>-->
+  <div class="row">
+    <p ng-show="even_split" class="col-md-12"><strong>Even split of total: ${{(even_split /100 ).toFixed(2)}}</strong></p>
+  </div>
+  <div class="row">
+    <p class="col-md-12"><small>(Calculations are automatically
+      performed each time you edit, add, or remove a user.)</small></p>
+  </div>
   <div id="fl-user-form" flash-alert active-class="in" class="alert fade">
       <span class="alert-message">{{flash.message}}</span>
   </div>
-  <form ng-show="ux.show_add_user" novalidate>
+  <form novalidate>
+    <h3>Add a participant</h3>
     <div class="row">
       <div class="col-md-6">
       <label for="name">Name*</label>
@@ -44,14 +52,7 @@
     </button>
     <button class="paint clr-4" ng-click="toggleEditUser()">Cancel</button>
   </form>
-  <hr ng-show="ux.show_add_user || ux.show_edit_user" />
-  <div class="row">
-    <p ng-show="even_split" class="col-md-12">Even split of total: ${{(even_split /100 ).toFixed(2)}}</p>
-  </div>
-  <div class="row">
-    <p class="col-md-12"><small>(Calculations are automatically
-      performed each time you edit, add, or remove a user.)</small></p>
-  </div>
+  <hr />
   <form novalidate>
     <h3>Add an expense</h3>
     <div class="row">
