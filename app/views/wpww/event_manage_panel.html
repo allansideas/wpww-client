@@ -7,10 +7,10 @@
     <p class="col-md-12"><small>(Calculations are automatically
       performed each time you edit, add, or remove a user.)</small></p>
   </div>
-  <div id="fl-user-form" flash-alert active-class="in" class="alert fade">
-      <span class="alert-message">{{flash.message}}</span>
-  </div>
   <form novalidate>
+    <div id="fl-user-form" flash-alert active-class="in" class="alert fade">
+        <span class="alert-message">{{flash.message}}</span>
+    </div>
     <h3>Add a participant</h3>
     <div class="row">
       <div class="col-md-6">
@@ -22,13 +22,13 @@
       <input id="email" type="email" ng-model="_user.email" />
       </div>
     </div>
+    <button class="paint clr-3" style="width: 100%;" ng-click="addUser()">Save <span ng-show="ux.adding_user"><img src="images/spinner.gif" alt="loading image" /></span></button>
     <!--<label for="amount">Paid*</label>-->
     <!--<input ng-show="!ux.adding_user" id="amount" type="number" ng-model="_user.amount_paid_cents" />-->
     <!--<input ng-show="ux.adding_user" id="amount" type="number" value="{{_user.amount_paid_cents / 100}}" />-->
     <!--<label for="description">For</label>-->
     <!--<textarea id="description" ng-model="_user.description"></textarea>-->
-    <button class="paint clr-3" ng-click="addUser()">Save <span ng-show="ux.adding_user"><img src="images/spinner.gif" alt="loading image" /></span></button>
-    <button class="paint clr-4" ng-click="toggleAddUser()">Close</button>
+    <!--<button class="paint clr-4" ng-click="toggleAddUser()">Close</button>-->
   </form>
   <form ng-show="ux.show_edit_user" novalidate>
     <p><strong>Editing {{_e_user.name}}</strong></p>
@@ -47,7 +47,7 @@
     <!--<input ng-show="ux.updating_user" id="amount" type="number" value="{{_e_user.amount_paid_cents / 100}}" />-->
     <!--<label for="description">For:</label>-->
     <!--<textarea id="description" ng-model="_e_user.description"></textarea>-->
-    <button ng-click="updateUser()" class="paint clr-3">Save 
+    <button ng-click="updateUser()" style="width: 100%;" class="paint clr-3 col-md-12">Save 
       <span ng-show="ux.updating_user"><img src="images/spinner.gif" alt="loading image" /></span>
     </button>
     <button class="paint clr-4" ng-click="toggleEditUser()">Cancel</button>
@@ -55,6 +55,9 @@
   <hr />
   <form novalidate>
     <h3>Add an expense</h3>
+    <div id="fl-expense-form" flash-alert active-class="in" class="alert fade">
+        <span class="alert-message">{{flash.message}}</span>
+    </div>
     <div class="row">
       <div class="col-md-6">
         <label for="user_name">For who?</label>
@@ -67,7 +70,7 @@
     </div>
     <label for="line_item_name">What was it?</label>
     <input id="line_item_name" type="text" ng-model="_line_item.name" />
-    <button class="paint clr-3" ng-click="addLineItem()">Save
+    <button class="paint clr-3" style="width: 100%;" ng-click="addLineItem()">Save
       <span ng-show="ux.adding_line_item"><img src="images/spinner.gif" alt="loading image" /></span>
     </button>
   </form>

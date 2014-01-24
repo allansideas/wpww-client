@@ -14,8 +14,8 @@ angular.module('wpwwClientApp', [
   'controllers.event_manage'
   'services.calculator'
 ])
-.constant("API", "localhost:9393")
-#.constant("API", "api.woww.instantiate.me")
+#.constant("API", "localhost:9393")
+.constant("API", "api.woww.instantiate.me")
 .config(['$urlRouterProvider', ($urlRouterProvider) ->
     $urlRouterProvider.otherwise('/')
   ])

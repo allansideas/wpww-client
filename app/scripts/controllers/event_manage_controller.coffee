@@ -39,6 +39,10 @@ angular.module('controllers.event_manage', [])
         flash.to('fl-user-form').error = 'Error saving the user check you filled in all the fields correctly.'
 
   $scope.addLineItem = ()->
+    if !$scope._line_item.user?
+      flash.to('fl-expense-form').error = 'Make sure you select an existing user.'
+      return false
+
     unless $scope.ux.adding_line_item
       $scope._line_item.user_id = $scope._line_item.user.id
       delete $scope._line_item.user
