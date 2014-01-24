@@ -31,7 +31,7 @@ angular.module('controllers.event_manage', [])
       .success (data)->
         $scope.$parent.group.users.unshift data
         $scope._user = {}
-        $scope._user.amount_payed_cents = 0
+        $scope._user.amount_paid_cents = 0
         $scope.ux.adding_user = false
         $scope.ux.show_add_user = false
         flash.to('fl-user-list').success = 'Successfully added user! Recalculating who owes who what...'
